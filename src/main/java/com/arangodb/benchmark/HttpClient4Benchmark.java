@@ -44,6 +44,11 @@ public class HttpClient4Benchmark extends AbstractBenchmark {
     }
 
     @Override
+    public HttpProtocolVersion getHttpVersion() {
+        return HttpProtocolVersion.HTTP11;
+    }
+
+    @Override
     protected void start() {
         for (int i = 0; i < nThreads; i++) {
             es.execute(() -> {

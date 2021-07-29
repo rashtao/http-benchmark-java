@@ -24,8 +24,10 @@ public class HttpClientAsyncBenchmark extends AbstractBenchmark {
     private final CloseableHttpAsyncClient client = createClient();
     private final Header authHeader;
     private final FutureCallback<SimpleHttpResponse> cb = createCb();
+    private final HttpProtocolVersion httpVersion;
 
     public HttpClientAsyncBenchmark(HttpProtocolVersion httpVersion) {
+        this.httpVersion = httpVersion;
         switch (httpVersion) {
             case HTTP11:
                 protocol = HttpVersionPolicy.FORCE_HTTP_1;
@@ -43,7 +45,11 @@ public class HttpClientAsyncBenchmark extends AbstractBenchmark {
         CharArrayBuffer b = new CharArrayBuffer(authChars.length);
         b.append(authChars, 0, authChars.length);
         authHeader = BufferedHeader.create(b);
+    }
 
+    @Override
+    public HttpProtocolVersion getHttpVersion() {
+        return httpVersion;
     }
 
     @Override

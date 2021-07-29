@@ -50,9 +50,20 @@ public abstract class AbstractBenchmark {
         startTime = System.currentTimeMillis();
     }
 
-    public long waitComplete() throws InterruptedException {
-        completed.await();
+    public long waitComplete() {
+        try {
+            completed.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return endTime - startTime;
+    }
+
+    /**
+     * @return req/s
+     */
+    public long getThroughput(){
+        return targetCount * 1000L / (endTime - startTime);
     }
 
     /**
@@ -73,5 +84,7 @@ public abstract class AbstractBenchmark {
     protected abstract void start();
 
     protected abstract void shutdown();
+
+    public abstract HttpProtocolVersion getHttpVersion();
 
 }

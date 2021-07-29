@@ -24,4 +24,9 @@ public class VertxBenchmark extends AbstractBenchmark {
     protected void shutdown() {
         vertx.close().toCompletionStage().toCompletableFuture().join();
     }
+
+    @Override
+    public HttpProtocolVersion getHttpVersion() {
+        return httpVersion;
+    }
 }

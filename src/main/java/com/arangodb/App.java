@@ -2,36 +2,33 @@ package com.arangodb;
 
 import com.arangodb.benchmark.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class App {
 
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println("---");
-        System.out.println("Vertx HTTP11");
-        runBenchmark(new VertxBenchmark(HttpProtocolVersion.HTTP11));
+    public static void main(String[] args) {
+        List<Result> results = Arrays.asList(
+                        new VertxBenchmark(HttpProtocolVersion.HTTP11),
+                        new VertxBenchmark(HttpProtocolVersion.H2C),
+                        new HttpClient4Benchmark(HttpProtocolVersion.HTTP11),
+                        new HttpClientBenchmark(HttpProtocolVersion.HTTP11),
+                        new HttpClientAsyncBenchmark(HttpProtocolVersion.HTTP11),
+                        new HttpClientAsyncBenchmark(HttpProtocolVersion.H2C)
+                ).stream()
+                .peek(App::runBenchmark)
+                .map(it -> new Result(it.getClass().getSimpleName(), it.getHttpVersion(), it.getThroughput()))
+                .collect(Collectors.toList());
 
-        System.out.println("---");
-        System.out.println("Vertx H2C");
-        runBenchmark(new VertxBenchmark(HttpProtocolVersion.H2C));
-
-        System.out.println("---");
-        System.out.println("HttpClient4 HTTP11");
-        runBenchmark(new HttpClient4Benchmark(HttpProtocolVersion.HTTP11));
-
-        System.out.println("---");
-        System.out.println("HttpClient HTTP11");
-        runBenchmark(new HttpClientBenchmark(HttpProtocolVersion.HTTP11));
-
-        System.out.println("---");
-        System.out.println("HttpClientAsync HTTP11");
-        runBenchmark(new HttpClientAsyncBenchmark(HttpProtocolVersion.HTTP11));
-
-        System.out.println("---");
-        System.out.println("HttpClientAsync H2C");
-        runBenchmark(new HttpClientAsyncBenchmark(HttpProtocolVersion.H2C));
-
+        System.out.println("--------------------");
+        results.forEach(Result::print);
     }
 
-    private static void runBenchmark(AbstractBenchmark b) throws InterruptedException {
+    private static void runBenchmark(AbstractBenchmark b) {
+        System.out.println("---");
+        System.out.println(b.getClass().getSimpleName() + " " + b.getHttpVersion());
+
         // warmup
         b.startBenchmark();
 
@@ -43,4 +40,22 @@ public class App {
         System.out.println(b.waitComplete());
     }
 
+}
+
+
+class Result {
+    private static String format = "|%1$-40s|%2$-10s|%3$-10s|\n";
+    final String name;
+    final HttpProtocolVersion httpVersion;
+    final long thrpt;
+
+    Result(String name, HttpProtocolVersion httpVersion, long thrpt) {
+        this.name = name;
+        this.httpVersion = httpVersion;
+        this.thrpt = thrpt;
+    }
+
+    public void print() {
+        System.out.format(format, name, httpVersion, thrpt);
+    }
 }
