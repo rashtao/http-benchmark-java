@@ -16,7 +16,7 @@ import org.apache.hc.core5.util.CharArrayBuffer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class HttpClientAsyncBenchmark extends AbstractBenchmark {
+public class HttpClient5AsyncBenchmark extends AbstractBenchmark {
 
     private final HttpVersionPolicy protocol;
     private final int nThreads = 4;
@@ -26,7 +26,7 @@ public class HttpClientAsyncBenchmark extends AbstractBenchmark {
     private final FutureCallback<SimpleHttpResponse> cb = createCb();
     private final HttpProtocolVersion httpVersion;
 
-    public HttpClientAsyncBenchmark(HttpProtocolVersion httpVersion) {
+    public HttpClient5AsyncBenchmark(HttpProtocolVersion httpVersion) {
         this.httpVersion = httpVersion;
         switch (httpVersion) {
             case HTTP11:

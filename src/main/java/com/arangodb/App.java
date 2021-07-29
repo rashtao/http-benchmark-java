@@ -13,16 +13,17 @@ public class App {
                         new VertxBenchmark(HttpProtocolVersion.HTTP11),
                         new VertxBenchmark(HttpProtocolVersion.H2C),
                         new HttpClient4Benchmark(HttpProtocolVersion.HTTP11),
-                        new HttpClientBenchmark(HttpProtocolVersion.HTTP11),
-                        new HttpClientAsyncBenchmark(HttpProtocolVersion.HTTP11),
-                        new HttpClientAsyncBenchmark(HttpProtocolVersion.H2C)
+                        new HttpClient5Benchmark(HttpProtocolVersion.HTTP11),
+                        new HttpClient5AsyncBenchmark(HttpProtocolVersion.HTTP11),
+                        new HttpClient5AsyncBenchmark(HttpProtocolVersion.H2C)
                 ).stream()
                 .peek(App::runBenchmark)
                 .map(it -> new Result(it.getClass().getSimpleName(), it.getHttpVersion(), it.getThroughput()))
                 .collect(Collectors.toList());
 
-        System.out.println("--------------------");
+        System.out.println("------------------------------------------------------------------------------------");
         results.forEach(Result::print);
+        System.out.println("------------------------------------------------------------------------------------");
     }
 
     private static void runBenchmark(AbstractBenchmark b) {

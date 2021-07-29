@@ -20,13 +20,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HttpClientBenchmark extends AbstractBenchmark {
+public class HttpClient5Benchmark extends AbstractBenchmark {
     private final Header authHeader;
     private final int nThreads;
     private final ExecutorService es;
     private final CloseableHttpClient client;
 
-    public HttpClientBenchmark(HttpProtocolVersion httpVersion) {
+    public HttpClient5Benchmark(HttpProtocolVersion httpVersion) {
         if (!HttpProtocolVersion.HTTP11.equals(httpVersion)) {
             throw new IllegalArgumentException();
         }
