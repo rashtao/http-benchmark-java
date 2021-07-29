@@ -17,65 +17,60 @@ import org.apache.hc.core5.util.Timeout;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class HttpClientBenchmark {
+public class HttpClientBenchmark extends AbstractBenchmark {
+    private final Header authHeader;
+    private final int nThreads;
+    private final ExecutorService es;
+    private final CloseableHttpClient client;
 
-    public static void main(String[] args) {
+    public HttpClientBenchmark(HttpProtocolVersion httpProtocolVersion) {
+        super(httpProtocolVersion);
+        if (!HttpProtocolVersion.HTTP11.equals(httpProtocolVersion)) {
+            throw new IllegalArgumentException();
+        }
+
+        // authHeader
         String authString = HttpHeaders.AUTHORIZATION + ": Basic " + new String(Base64.encodeBase64("root:test".getBytes(StandardCharsets.ISO_8859_1)));
         char[] authChars = authString.toCharArray();
         CharArrayBuffer b = new CharArrayBuffer(authChars.length);
         b.append(authChars, 0, authChars.length);
-        Header authHeader = BufferedHeader.create(b);
+        authHeader = BufferedHeader.create(b);
 
-        AtomicInteger counter = new AtomicInteger();
-        int nThreads = 32;
-        ExecutorService es = Executors.newFixedThreadPool(nThreads);
-        CloseableHttpClient client = createClient(nThreads);
+        // init
+        nThreads = 32;
+        es = Executors.newFixedThreadPool(nThreads);
+        client = createClient(nThreads);
+    }
 
+    @Override
+    protected void start() {
         for (int i = 0; i < nThreads; i++) {
             es.execute(() -> {
                 HttpUriRequest request = new HttpGet("http://127.0.0.1:8529/_api/version");
                 request.setHeader(authHeader);
-                int j = 0;
-                while (true) {
+                boolean more = true;
+                while (more) {
                     try {
                         CloseableHttpResponse response = client.execute(request);
                         EntityUtils.consume(response.getEntity());
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
-                    j++;
-                    if (j % 1_000 == 0) {
-                        counter.incrementAndGet();
-                    }
+                    more = success(1);
                 }
             });
         }
-
-        new Thread(() -> {
-            while (true) {
-                long start = new Date().getTime();
-                try {
-                    Thread.sleep(10_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                long current = new Date().getTime();
-                long elapsed = current - start;
-                double reqsPerSec = 1_000.0 * counter.get() / elapsed;
-                counter.set(0);
-                System.out.println("reqs/s: " + reqsPerSec);
-            }
-        }).start();
-
     }
 
-    private static CloseableHttpClient createClient(int connections) {
+    @Override
+    protected void shutdown() {
+        es.shutdown();
+    }
+
+    private CloseableHttpClient createClient(int connections) {
         SocketConfig socketConfig = SocketConfig.custom()
                 .setSoTimeout(Timeout.ofSeconds(5))
                 .setTcpNoDelay(true)
