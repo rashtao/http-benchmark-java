@@ -26,9 +26,8 @@ public class HttpClientBenchmark extends AbstractBenchmark {
     private final ExecutorService es;
     private final CloseableHttpClient client;
 
-    public HttpClientBenchmark(HttpProtocolVersion httpProtocolVersion) {
-        super(httpProtocolVersion);
-        if (!HttpProtocolVersion.HTTP11.equals(httpProtocolVersion)) {
+    public HttpClientBenchmark(HttpProtocolVersion httpVersion) {
+        if (!HttpProtocolVersion.HTTP11.equals(httpVersion)) {
             throw new IllegalArgumentException();
         }
 

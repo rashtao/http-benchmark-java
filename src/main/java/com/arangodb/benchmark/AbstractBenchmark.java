@@ -6,16 +6,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractBenchmark {
 
-    private final HttpProtocolVersion httpVersion;
     private final CountDownLatch completed = new CountDownLatch(1);
     private volatile Long startTime = null;
     private volatile Long endTime = null;
     private volatile int targetCount = Integer.MAX_VALUE;
     private final AtomicInteger counter = new AtomicInteger();
-
-    protected AbstractBenchmark(HttpProtocolVersion httpVersion) {
-        this.httpVersion = httpVersion;
-    }
 
     public void startMonitor(int duration) {
         for (int i = 0; i < duration; i++) {
@@ -58,10 +53,6 @@ public abstract class AbstractBenchmark {
     public long waitComplete() throws InterruptedException {
         completed.await();
         return endTime - startTime;
-    }
-
-    public HttpProtocolVersion getHttpVersion() {
-        return httpVersion;
     }
 
     /**

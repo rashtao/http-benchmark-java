@@ -13,15 +13,15 @@ import io.vertx.ext.web.client.WebClientOptions;
 public class VertxClient extends AbstractVerticle {
 
     private final HttpVersion protocol;
-    private final int maxPendingRequests;
+    private final int maxPendingRequestsPerThread;
     private final AbstractBenchmark benchmark;
     private WebClient client;
     private final UsernamePasswordCredentials auth = new UsernamePasswordCredentials("root", "test");
 
-    public VertxClient(int maxPendingRequests, AbstractBenchmark benchmark) {
-        this.maxPendingRequests = maxPendingRequests;
+    public VertxClient(int maxPendingRequestsPerThread, AbstractBenchmark benchmark, HttpProtocolVersion httpVersion) {
+        this.maxPendingRequestsPerThread = maxPendingRequestsPerThread;
         this.benchmark = benchmark;
-        switch (benchmark.getHttpVersion()) {
+        switch (httpVersion) {
             case HTTP11:
                 protocol = HttpVersion.HTTP_1_1;
                 break;
@@ -65,7 +65,7 @@ public class VertxClient extends AbstractVerticle {
                 .setMaxPoolSize(4)
                 .setHttp2MaxPoolSize(4)
         );
-        for (int i = 0; i < maxPendingRequests; i++) {
+        for (int i = 0; i < maxPendingRequestsPerThread; i++) {
             sendReq();
         }
     }

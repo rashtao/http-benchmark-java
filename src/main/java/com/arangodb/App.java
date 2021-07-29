@@ -1,9 +1,6 @@
 package com.arangodb;
 
-import com.arangodb.benchmark.AbstractBenchmark;
-import com.arangodb.benchmark.HttpClientBenchmark;
-import com.arangodb.benchmark.HttpProtocolVersion;
-import com.arangodb.benchmark.VertxBenchmark;
+import com.arangodb.benchmark.*;
 
 public class App {
 
@@ -19,6 +16,14 @@ public class App {
         System.out.println("---");
         System.out.println("HttpClient HTTP11");
         runBenchmark(new HttpClientBenchmark(HttpProtocolVersion.HTTP11));
+
+        System.out.println("---");
+        System.out.println("HttpClientAsync HTTP11");
+        runBenchmark(new HttpClientAsyncBenchmark(HttpProtocolVersion.HTTP11));
+
+        System.out.println("---");
+        System.out.println("HttpClientAsync H2C");
+        runBenchmark(new HttpClientAsyncBenchmark(HttpProtocolVersion.H2C));
 
     }
 
