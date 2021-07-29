@@ -23,6 +23,7 @@ public class HttpClientAsyncBenchmark extends AbstractBenchmark {
     private final int maxPendingRequests = 32 * nThreads;
     private final CloseableHttpAsyncClient client = createClient();
     private final Header authHeader;
+    private final FutureCallback<SimpleHttpResponse> cb = createCb();
 
     public HttpClientAsyncBenchmark(HttpProtocolVersion httpVersion) {
         switch (httpVersion) {
@@ -67,7 +68,7 @@ public class HttpClientAsyncBenchmark extends AbstractBenchmark {
         client.execute(
                 SimpleRequestProducer.create(request),
                 SimpleResponseConsumer.create(),
-                createCb());
+                cb);
     }
 
     private CloseableHttpAsyncClient createClient() {
