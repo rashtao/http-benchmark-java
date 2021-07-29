@@ -14,6 +14,10 @@ public class App {
         runBenchmark(new VertxBenchmark(HttpProtocolVersion.H2C));
 
         System.out.println("---");
+        System.out.println("HttpClient4 HTTP11");
+        runBenchmark(new HttpClient4Benchmark(HttpProtocolVersion.HTTP11));
+
+        System.out.println("---");
         System.out.println("HttpClient HTTP11");
         runBenchmark(new HttpClientBenchmark(HttpProtocolVersion.HTTP11));
 
