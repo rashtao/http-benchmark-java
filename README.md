@@ -3,6 +3,8 @@ Benchmarks of some Java http clients
 
 ## results
 
+req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` after 10s warmup:
+
 ```text
 ------------------------------------------------------------------------------------
 |VertxBenchmark                          |HTTP11    |95102     |
