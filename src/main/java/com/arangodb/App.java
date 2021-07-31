@@ -1,33 +1,20 @@
 package com.arangodb;
 
-import com.arangodb.benchmark.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.arangodb.benchmark.AbstractBenchmark;
+import com.arangodb.benchmark.HttpProtocolVersion;
 
 public class App {
 
     public static void main(String[] args) {
-        List<Result> results = Arrays.asList(
-                        new VertxBenchmark(HttpProtocolVersion.HTTP11),
-                        new VertxBenchmark(HttpProtocolVersion.H2C),
-                        new HttpClient4Benchmark(HttpProtocolVersion.HTTP11),
-                        new HttpClient5Benchmark(HttpProtocolVersion.HTTP11),
-                        new HttpClient5AsyncBenchmark(HttpProtocolVersion.HTTP11),
-                        new HttpClient5AsyncBenchmark(HttpProtocolVersion.H2C)
-                ).stream()
-                .peek(App::runBenchmark)
-                .map(it -> new Result(it.getClass().getSimpleName(), it.getHttpVersion(), it.getThroughput()))
-                .collect(Collectors.toList());
-
+        AbstractBenchmark b = AbstractBenchmark.of(args[0], args[1]);
+        runBenchmark(b);
+        Result res = new Result(b.getClass().getSimpleName(), b.getHttpVersion(), b.getThroughput());
         System.out.println("------------------------------------------------------------------------------------");
-        results.forEach(Result::print);
+        res.print();
         System.out.println("------------------------------------------------------------------------------------");
     }
 
     private static void runBenchmark(AbstractBenchmark b) {
-        System.out.println("---");
         System.out.println(b.getClass().getSimpleName() + " " + b.getHttpVersion());
 
         // warmup

@@ -1,8 +1,10 @@
 package com.arangodb.benchmark;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 public abstract class AbstractBenchmark {
 
@@ -11,6 +13,19 @@ public abstract class AbstractBenchmark {
     private volatile Long endTime = null;
     private volatile int targetCount = Integer.MAX_VALUE;
     private final AtomicInteger counter = new AtomicInteger();
+
+    private static Map<String, Function<HttpProtocolVersion, AbstractBenchmark>> instantiatorMap = Map.of(
+            "HttpClient4", HttpClient4Benchmark::new,
+            "HttpClient5", HttpClient5Benchmark::new,
+            "HttpClient5Async", HttpClient5AsyncBenchmark::new,
+            "Vertx", VertxBenchmark::new
+    );
+
+    public static AbstractBenchmark of(String type, String httpVersion) {
+        if (!instantiatorMap.containsKey(type))
+            throw new IllegalArgumentException(type);
+        return instantiatorMap.get(type).apply(HttpProtocolVersion.of(httpVersion));
+    }
 
     public void startMonitor(int duration) {
         for (int i = 0; i < duration; i++) {
@@ -62,7 +77,7 @@ public abstract class AbstractBenchmark {
     /**
      * @return req/s
      */
-    public long getThroughput(){
+    public long getThroughput() {
         return targetCount * 1000L / (endTime - startTime);
     }
 
