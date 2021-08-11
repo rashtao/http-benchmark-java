@@ -18,7 +18,8 @@ public abstract class AbstractBenchmark {
             "HttpClient4", HttpClient4Benchmark::new,
             "HttpClient5", HttpClient5Benchmark::new,
             "HttpClient5Async", HttpClient5AsyncBenchmark::new,
-            "Vertx", VertxBenchmark::new
+            "Vertx", VertxBenchmark::new,
+            "AsyncHttpClient", AsyncHttpClientBenchmark::new
     );
 
     public static AbstractBenchmark of(String type, String httpVersion) {

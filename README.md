@@ -19,12 +19,13 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` afte
 
 ```text
 ------------------------------------------------------------------------------------
-|VertxBenchmark                          |HTTP11    |106439    |
-|VertxBenchmark                          |H2C       |91516     |
-|HttpClient4Benchmark                    |HTTP11    |70333     |
-|HttpClient5Benchmark                    |HTTP11    |62900     |
-|HttpClient5AsyncBenchmark               |HTTP11    |54013     |
-|HttpClient5AsyncBenchmark               |H2C       |56840     |
+|VertxBenchmark                          |HTTP11    |96730     |
+|VertxBenchmark                          |H2C       |83948     |
+|HttpClient4Benchmark                    |HTTP11    |70686     |
+|HttpClient5Benchmark                    |HTTP11    |61728     |
+|HttpClient5AsyncBenchmark               |HTTP11    |55432     |
+|HttpClient5AsyncBenchmark               |H2C       |54347     |
+|AsyncHttpClientBenchmark                |HTTP11    |80664     |
 ------------------------------------------------------------------------------------
 ```
 

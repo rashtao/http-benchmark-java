@@ -8,3 +8,4 @@ java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar Ht
 java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient5 HTTP11
 java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient5Async HTTP11
 java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient5Async H2C
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar AsyncHttpClient HTTP11
