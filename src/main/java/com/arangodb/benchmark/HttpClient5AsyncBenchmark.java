@@ -69,7 +69,7 @@ public class HttpClient5AsyncBenchmark extends AbstractBenchmark {
     }
 
     private void sendReq() {
-        final SimpleHttpRequest request = SimpleRequestBuilder.get("http://127.0.0.1:8529/_api/version").build();
+        final SimpleHttpRequest request = SimpleRequestBuilder.get(URL).build();
         request.setHeader(authHeader);
         client.execute(
                 SimpleRequestProducer.create(request),

@@ -45,7 +45,7 @@ public class AsyncHttpClientBenchmark extends AbstractBenchmark {
     }
 
     private void sendReq() {
-        client.prepareGet("http://127.0.0.1:8529/_api/version")
+        client.prepareGet(URL)
                 .setHeader(HttpHeaderNames.AUTHORIZATION, "Basic " + new String(Base64.encodeBase64("root:test".getBytes(StandardCharsets.ISO_8859_1))))
                 .execute(cb);
     }

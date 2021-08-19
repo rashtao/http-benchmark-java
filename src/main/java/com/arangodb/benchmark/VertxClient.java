@@ -17,10 +17,18 @@ public class VertxClient extends AbstractVerticle {
     private final AbstractBenchmark benchmark;
     private WebClient client;
     private final UsernamePasswordCredentials auth = new UsernamePasswordCredentials("root", "test");
+    private final int port;
+    private final String host;
+    private final String path;
 
-    public VertxClient(int maxPendingRequestsPerThread, AbstractBenchmark benchmark, HttpProtocolVersion httpVersion) {
+    public VertxClient(int maxPendingRequestsPerThread, AbstractBenchmark benchmark, HttpProtocolVersion httpVersion,
+    int port, String host, String path) {
         this.maxPendingRequestsPerThread = maxPendingRequestsPerThread;
         this.benchmark = benchmark;
+        this.port = port;
+        this.host = host;
+        this.path = path;
+
         switch (httpVersion) {
             case HTTP11:
                 protocol = HttpVersion.HTTP_1_1;
@@ -46,7 +54,7 @@ public class VertxClient extends AbstractVerticle {
 
     private void sendReq() {
         client
-                .get(8529, "127.0.0.1", "/_api/version")
+                .get(port, host, path)
                 .authentication(auth)
                 .send(createCb());
     }

@@ -52,7 +52,7 @@ public class HttpClient4Benchmark extends AbstractBenchmark {
     protected void start() {
         for (int i = 0; i < nThreads; i++) {
             es.execute(() -> {
-                HttpUriRequest request = new HttpGet("http://127.0.0.1:8529/_api/version");
+                HttpUriRequest request = new HttpGet(URL);
                 request.setHeader(authHeader);
                 boolean more = true;
                 while (more) {

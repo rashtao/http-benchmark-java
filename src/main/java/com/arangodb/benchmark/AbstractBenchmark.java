@@ -8,6 +8,11 @@ import java.util.function.Function;
 
 public abstract class AbstractBenchmark {
 
+    protected static final String SCHEME = "http";
+    protected static final String HOST = "127.0.0.1";
+    protected static final int PORT = 8529;
+    protected static final String PATH = "/_api/version?details=true";
+    protected static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
     private final CountDownLatch completed = new CountDownLatch(1);
     private volatile Long startTime = null;
     private volatile Long endTime = null;
