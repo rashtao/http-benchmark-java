@@ -1,6 +1,5 @@
 package com.arangodb.benchmark;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.hc.client5.http.async.methods.*;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
@@ -14,13 +13,12 @@ import org.apache.hc.core5.reactor.IOReactorConfig;
 import org.apache.hc.core5.util.CharArrayBuffer;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class HttpClient5AsyncBenchmark extends AbstractBenchmark {
 
     private final HttpVersionPolicy protocol;
-    private final int nThreads = 4;
-    private final int maxPendingRequests = 32 * nThreads;
+    private final int nThreads = ASYNC_THREADS;
+    private final int maxPendingRequests = MAX_PENDING_REQS_PER_THREAD * nThreads;
     private final CloseableHttpAsyncClient client = createClient();
     private final Header authHeader;
     private final FutureCallback<SimpleHttpResponse> cb = createCb();
@@ -40,7 +38,7 @@ public class HttpClient5AsyncBenchmark extends AbstractBenchmark {
         }
 
         // authHeader
-        String authString = HttpHeaders.AUTHORIZATION + ": Basic " + new String(Base64.encodeBase64("root:test".getBytes(StandardCharsets.ISO_8859_1)));
+        String authString = HttpHeaders.AUTHORIZATION + ": " + AUTH_HEADER;
         char[] authChars = authString.toCharArray();
         CharArrayBuffer b = new CharArrayBuffer(authChars.length);
         b.append(authChars, 0, authChars.length);

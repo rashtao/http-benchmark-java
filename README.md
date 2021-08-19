@@ -13,19 +13,34 @@ sudo arangod --server.io-threads 4
 ./run.sh
 ```
 
+## System properties
+
+| Parameter                       | Default         |
+|---------------------------------|-----------------|
+| JB_USER                         | `root`          |
+| JB_PASSWD                       | `test`          |
+| JB_SYNC_THREADS                 | `32`            |
+| JB_ASYNC_THREADS                | `4`             |
+| JB_MAX_PENDING_REQS_PER_THREAD  | `32`            |
+| JB_SCHEME                       | `http`          |
+| JB_HOST                         | `127.0.0.1`     |
+| JB_PORT                         | `8529`          |
+| JB_PATH                         | `/_api/version` |
+
+
 ## results
 
 req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` after 10s warmup:
 
 ```text
 ------------------------------------------------------------------------------------
-|VertxBenchmark                          |HTTP11    |96730     |
-|VertxBenchmark                          |H2C       |83948     |
-|HttpClient4Benchmark                    |HTTP11    |70686     |
-|HttpClient5Benchmark                    |HTTP11    |61728     |
-|HttpClient5AsyncBenchmark               |HTTP11    |55432     |
-|HttpClient5AsyncBenchmark               |H2C       |54347     |
-|AsyncHttpClientBenchmark                |HTTP11    |80664     |
+|VertxBenchmark                          |HTTP11    |100321    |
+|VertxBenchmark                          |H2C       |89413     |
+|HttpClient4Benchmark                    |HTTP11    |70566     |
+|HttpClient5Benchmark                    |HTTP11    |61984     |
+|HttpClient5AsyncBenchmark               |HTTP11    |54016     |
+|HttpClient5AsyncBenchmark               |H2C       |55604     |
+|AsyncHttpClientBenchmark                |HTTP11    |81526     |
 ------------------------------------------------------------------------------------
 ```
 
@@ -33,13 +48,13 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version?detai
 
 ```text
 ------------------------------------------------------------------------------------
-|VertxBenchmark                          |HTTP11    |58493     |
-|VertxBenchmark                          |H2C       |59527     |
-|HttpClient4Benchmark                    |HTTP11    |49897     |
-|HttpClient5Benchmark                    |HTTP11    |47001     |
-|HttpClient5AsyncBenchmark               |HTTP11    |44620     |
-|HttpClient5AsyncBenchmark               |H2C       |44152     |
-|AsyncHttpClientBenchmark                |HTTP11    |56430     |
+|VertxBenchmark                          |HTTP11    |58088     |
+|VertxBenchmark                          |H2C       |59028     |
+|HttpClient4Benchmark                    |HTTP11    |50867     |
+|HttpClient5Benchmark                    |HTTP11    |47149     |
+|HttpClient5AsyncBenchmark               |HTTP11    |44483     |
+|HttpClient5AsyncBenchmark               |H2C       |44557     |
+|AsyncHttpClientBenchmark                |HTTP11    |56097     |
 ------------------------------------------------------------------------------------
 ```
 

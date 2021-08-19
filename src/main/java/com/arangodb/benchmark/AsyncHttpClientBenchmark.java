@@ -2,16 +2,14 @@ package com.arangodb.benchmark;
 
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
-import org.apache.commons.codec.binary.Base64;
 import org.asynchttpclient.*;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class AsyncHttpClientBenchmark extends AbstractBenchmark {
 
-    private final int nThreads = 4;
-    private final int maxPendingRequests = 32 * nThreads;
+    private final int nThreads = ASYNC_THREADS;
+    private final int maxPendingRequests = MAX_PENDING_REQS_PER_THREAD * nThreads;
     private final AsyncHttpClient client = createClient();
     private final AsyncHandler<String> cb = createCb();
     private final HttpProtocolVersion httpVersion;
@@ -46,7 +44,7 @@ public class AsyncHttpClientBenchmark extends AbstractBenchmark {
 
     private void sendReq() {
         client.prepareGet(URL)
-                .setHeader(HttpHeaderNames.AUTHORIZATION, "Basic " + new String(Base64.encodeBase64("root:test".getBytes(StandardCharsets.ISO_8859_1))))
+                .setHeader(HttpHeaderNames.AUTHORIZATION, AUTH_HEADER)
                 .execute(cb);
     }
 

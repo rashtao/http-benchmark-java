@@ -4,8 +4,8 @@ import io.vertx.core.Vertx;
 
 public class VertxBenchmark extends AbstractBenchmark {
 
-    private final int nThreads = 4;
-    private final int maxPendingRequestsPerThread = 32;
+    private final int nThreads = ASYNC_THREADS;
+    private final int maxPendingRequestsPerThread = MAX_PENDING_REQS_PER_THREAD;
     private final Vertx vertx = Vertx.vertx();
     private final HttpProtocolVersion httpVersion;
 
@@ -17,7 +17,7 @@ public class VertxBenchmark extends AbstractBenchmark {
     protected void start() {
         for (int i = 0; i < nThreads; i++) {
             vertx.deployVerticle(new VertxClient(maxPendingRequestsPerThread, this, httpVersion,
-                    PORT, HOST, PATH));
+                    PORT, HOST, PATH, USER, PASSWD));
         }
     }
 

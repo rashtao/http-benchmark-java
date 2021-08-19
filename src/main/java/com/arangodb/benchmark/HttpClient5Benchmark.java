@@ -1,6 +1,5 @@
 package com.arangodb.benchmark;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -16,7 +15,6 @@ import org.apache.hc.core5.util.CharArrayBuffer;
 import org.apache.hc.core5.util.Timeout;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,14 +30,14 @@ public class HttpClient5Benchmark extends AbstractBenchmark {
         }
 
         // authHeader
-        String authString = HttpHeaders.AUTHORIZATION + ": Basic " + new String(Base64.encodeBase64("root:test".getBytes(StandardCharsets.ISO_8859_1)));
+        String authString = HttpHeaders.AUTHORIZATION + ": " + AUTH_HEADER;
         char[] authChars = authString.toCharArray();
         CharArrayBuffer b = new CharArrayBuffer(authChars.length);
         b.append(authChars, 0, authChars.length);
         authHeader = BufferedHeader.create(b);
 
         // init
-        nThreads = 32;
+        nThreads = SYNC_THREADS;
         es = Executors.newFixedThreadPool(nThreads);
         client = createClient(nThreads);
     }

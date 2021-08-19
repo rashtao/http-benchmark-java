@@ -1,5 +1,8 @@
 package com.arangodb.benchmark;
 
+import org.apache.commons.codec.binary.Base64;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -8,11 +11,20 @@ import java.util.function.Function;
 
 public abstract class AbstractBenchmark {
 
-    protected static final String SCHEME = "http";
-    protected static final String HOST = "127.0.0.1";
-    protected static final int PORT = 8529;
-    protected static final String PATH = "/_api/version?details=true";
+    protected static final String USER = System.getProperty("JB_USER", "root");
+    protected static final String PASSWD = System.getProperty("JB_PASSWD", "test");
+    protected static final String AUTH_HEADER = "Basic " + new String(Base64.encodeBase64((USER + ":" + PASSWD).getBytes(StandardCharsets.ISO_8859_1)));
+
+    protected static final int SYNC_THREADS = Integer.parseInt(System.getProperty("JB_SYNC_THREADS", "32"));
+    protected static final int ASYNC_THREADS = Integer.parseInt(System.getProperty("JB_ASYNC_THREADS", "4"));
+    protected static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(System.getProperty("JB_MAX_PENDING_REQS_PER_THREAD", "32"));
+
+    protected static final String SCHEME = System.getProperty("JB_SCHEME", "http");
+    protected static final String HOST = System.getProperty("JB_HOST", "127.0.0.1");
+    protected static final int PORT = Integer.parseInt(System.getProperty("JB_PORT", "8529"));
+    protected static final String PATH = System.getProperty("JB_PATH", "/_api/version");
     protected static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
+
     private final CountDownLatch completed = new CountDownLatch(1);
     private volatile Long startTime = null;
     private volatile Long endTime = null;
