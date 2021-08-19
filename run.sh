@@ -2,10 +2,32 @@
 
 mvn --version
 mvn clean package
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar Vertx HTTP11
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar Vertx H2C
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient4 HTTP11
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient5 HTTP11
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient5Async HTTP11
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar HttpClient5Async H2C
-java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar AsyncHttpClient HTTP11
+
+export JB_CLIENT=Vertx
+export JB_PROTOCOL=HTTP11
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+export JB_CLIENT=Vertx
+export JB_PROTOCOL=H2C
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+export JB_CLIENT=HttpClient4
+export JB_PROTOCOL=HTTP11
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+export JB_CLIENT=HttpClient5
+export JB_PROTOCOL=HTTP11
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+export JB_CLIENT=HttpClient5Async
+export JB_PROTOCOL=HTTP11
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+export JB_CLIENT=HttpClient5Async
+export JB_PROTOCOL=H2C
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+export JB_CLIENT=AsyncHttpClient
+export JB_PROTOCOL=HTTP11
+java -jar ./target/http-benchmark-java-1.0-SNAPSHOT-jar-with-dependencies.jar
+

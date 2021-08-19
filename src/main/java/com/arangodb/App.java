@@ -6,7 +6,9 @@ import com.arangodb.benchmark.HttpProtocolVersion;
 public class App {
 
     public static void main(String[] args) {
-        AbstractBenchmark b = AbstractBenchmark.of(args[0], args[1]);
+        String client = System.getenv("JB_CLIENT");
+        String protocol = System.getenv("JB_PROTOCOL");
+        AbstractBenchmark b = AbstractBenchmark.of(client, protocol);
         runBenchmark(b);
         Result res = new Result(b.getClass().getSimpleName(), b.getHttpVersion(), b.getThroughput());
         System.out.println("------------------------------------------------------------------------------------");
@@ -16,16 +18,26 @@ public class App {
 
     private static void runBenchmark(AbstractBenchmark b) {
         System.out.println(b.getClass().getSimpleName() + " " + b.getHttpVersion());
+        int warmupDuration = Integer.parseInt(getEnv("JB_WARMUP_DURATION", "10"));
+        int numberOfRequests = Integer.parseInt(getEnv("JB_REQUESTS", "1000000"));
 
         // warmup
         b.startBenchmark();
 
         // start monitor / warmup
-        b.startMonitor(10);
+        b.startMonitor(warmupDuration);
 
         // start benchmark
-        b.startMeasuring(1_000_000);
+        b.startMeasuring(numberOfRequests);
         System.out.println(b.waitComplete());
+    }
+
+    private static String getEnv(String name, String defaultValue) {
+        String v = System.getenv(name);
+        if (v != null)
+            return v;
+        else
+            return defaultValue;
     }
 
 }

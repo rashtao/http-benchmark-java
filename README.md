@@ -13,9 +13,9 @@ sudo arangod --server.io-threads 4
 ./run.sh
 ```
 
-## System properties
+## Environment variables
 
-| Parameter                       | Default         |
+| Name                            | Default value   |
 |---------------------------------|-----------------|
 | JB_USER                         | `root`          |
 | JB_PASSWD                       | `test`          |
@@ -26,6 +26,32 @@ sudo arangod --server.io-threads 4
 | JB_HOST                         | `127.0.0.1`     |
 | JB_PORT                         | `8529`          |
 | JB_PATH                         | `/_api/version` |
+| JB_WARMUP_DURATION              | `10`            |
+| JB_REQUESTS                     | `1000000`       |
+| JB_PROTOCOL                     | `<mandatory>`   |
+| JB_CLIENT                       | `<mandatory>`   |
+
+
+The following combinations of `JB_CLIENT` and `JB_PROTOCOL` are allowed:
+
+| `JB_CLIENT`        | `JB_PROTOCOL` | 
+|--------------------|---------------|
+| `Vertx`            | `HTTP11`      |
+| `Vertx`            | `H2C`         |
+| `HttpClient4`      | `HTTP11`      |
+| `HttpClient5`      | `HTTP11`      |
+| `HttpClient5Async` | `HTTP11`      |
+| `HttpClient5Async` | `H2C`         |
+| `AsyncHttpClient`  | `HTTP11`      |
+
+
+## build docker image
+
+Build docker image named `http-benchmark-java`:
+
+```shell
+mvn compile jib:dockerBuild
+```
 
 
 ## results

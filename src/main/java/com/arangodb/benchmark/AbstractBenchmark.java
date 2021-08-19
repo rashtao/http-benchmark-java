@@ -11,18 +11,18 @@ import java.util.function.Function;
 
 public abstract class AbstractBenchmark {
 
-    protected static final String USER = System.getProperty("JB_USER", "root");
-    protected static final String PASSWD = System.getProperty("JB_PASSWD", "test");
+    protected static final String USER = getEnv("JB_USER", "root");
+    protected static final String PASSWD = getEnv("JB_PASSWD", "test");
     protected static final String AUTH_HEADER = "Basic " + new String(Base64.encodeBase64((USER + ":" + PASSWD).getBytes(StandardCharsets.ISO_8859_1)));
 
-    protected static final int SYNC_THREADS = Integer.parseInt(System.getProperty("JB_SYNC_THREADS", "32"));
-    protected static final int ASYNC_THREADS = Integer.parseInt(System.getProperty("JB_ASYNC_THREADS", "4"));
-    protected static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(System.getProperty("JB_MAX_PENDING_REQS_PER_THREAD", "32"));
+    protected static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "32"));
+    protected static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "4"));
+    protected static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "32"));
 
-    protected static final String SCHEME = System.getProperty("JB_SCHEME", "http");
-    protected static final String HOST = System.getProperty("JB_HOST", "127.0.0.1");
-    protected static final int PORT = Integer.parseInt(System.getProperty("JB_PORT", "8529"));
-    protected static final String PATH = System.getProperty("JB_PATH", "/_api/version");
+    protected static final String SCHEME = getEnv("JB_SCHEME", "http");
+    protected static final String HOST = getEnv("JB_HOST", "127.0.0.1");
+    protected static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8529"));
+    protected static final String PATH = getEnv("JB_PATH", "/_api/version");
     protected static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
 
     private final CountDownLatch completed = new CountDownLatch(1);
@@ -119,5 +119,13 @@ public abstract class AbstractBenchmark {
     protected abstract void shutdown();
 
     public abstract HttpProtocolVersion getHttpVersion();
+
+    private static String getEnv(String name, String defaultValue) {
+        String v = System.getenv(name);
+        if (v != null)
+            return v;
+        else
+            return defaultValue;
+    }
 
 }
