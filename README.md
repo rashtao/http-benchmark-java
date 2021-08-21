@@ -43,6 +43,8 @@ The following combinations of `JB_CLIENT` and `JB_PROTOCOL` are allowed:
 | `HttpClient5Async` | `HTTP11`      |
 | `HttpClient5Async` | `H2C`         |
 | `AsyncHttpClient`  | `HTTP11`      |
+| `ReactorNetty`     | `HTTP11`      |
+| `ReactorNetty`     | `H2C`         |
 
 
 ## build docker image

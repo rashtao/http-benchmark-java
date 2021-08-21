@@ -36,8 +36,9 @@ public abstract class AbstractBenchmark {
             "HttpClient5", HttpClient5Benchmark::new,
             "HttpClient5Async", HttpClient5AsyncBenchmark::new,
             "Vertx", VertxBenchmark::new,
-            "AsyncHttpClient", AsyncHttpClientBenchmark::new
-    );
+            "AsyncHttpClient", AsyncHttpClientBenchmark::new,
+            "ReactorNetty", ReactorNettyBenchmark::new
+            );
 
     public static AbstractBenchmark of(String type, String httpVersion) {
         if (!instantiatorMap.containsKey(type))
