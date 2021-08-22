@@ -17,7 +17,7 @@ public abstract class AbstractBenchmark {
 
     protected static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "32"));
     protected static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "4"));
-    protected static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "32"));
+    protected static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "128"));
 
     protected static final String SCHEME = getEnv("JB_SCHEME", "http");
     protected static final String HOST = getEnv("JB_HOST", "127.0.0.1");

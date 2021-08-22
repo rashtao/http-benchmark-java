@@ -16,7 +16,7 @@ public class ReactorNettyBenchmark extends AbstractBenchmark {
     private final HttpClient client;
     private final Consumer<String> cb = createCb();
     private final HttpProtocolVersion httpVersion;
-    private final Scheduler scheduler = Schedulers.single();
+    private final Scheduler scheduler = Schedulers.newBoundedElastic(ASYNC_THREADS, maxPendingRequests, "consumer");
 
     public ReactorNettyBenchmark(HttpProtocolVersion httpVersion) {
         this.httpVersion = httpVersion;
