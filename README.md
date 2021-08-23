@@ -44,7 +44,6 @@ The following combinations of `JB_CLIENT` and `JB_PROTOCOL` are allowed:
 | `HttpClient5Async` | `H2C`         |
 | `AsyncHttpClient`  | `HTTP11`      |
 | `ReactorNetty`     | `HTTP11`      |
-| `ReactorNetty`     | `H2C`         |
 
 
 ## build docker image
@@ -63,7 +62,6 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` afte
 ```text
 ------------------------------------------------------------------------------------
 |ReactorNettyBenchmark                   |HTTP11    |76155     |
-|ReactorNettyBenchmark                   |H2C       |43263     |
 |VertxBenchmark                          |HTTP11    |94688     |
 |VertxBenchmark                          |H2C       |87176     |
 |HttpClient4Benchmark                    |HTTP11    |73616     |
@@ -79,7 +77,6 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version?detai
 ```text
 ------------------------------------------------------------------------------------
 |ReactorNettyBenchmark                   |HTTP11    |55377     |
-|ReactorNettyBenchmark                   |H2C       |36284     |
 |VertxBenchmark                          |HTTP11    |55956     |
 |VertxBenchmark                          |H2C       |59499     |
 |HttpClient4Benchmark                    |HTTP11    |52197     |
@@ -89,6 +86,24 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version?detai
 |AsyncHttpClientBenchmark                |HTTP11    |60350     |
 ------------------------------------------------------------------------------------
 ```
+
+### remote host (LAN, ping < 1ms)
+
+req/s avg throughput for 1_000_000 `GET /_api/version` after 10s warmup:
+
+```text
+------------------------------------------------------------------------------------
+|ReactorNettyBenchmark                   |HTTP11    |121109    |
+|VertxBenchmark                          |HTTP11    |187722    |
+|VertxBenchmark                          |H2C       |155448    |
+|HttpClient4Benchmark                    |HTTP11    |101832    |
+|HttpClient5Benchmark                    |HTTP11    |83465     |
+|HttpClient5AsyncBenchmark               |HTTP11    |83416     |
+|HttpClient5AsyncBenchmark               |H2C       |81652     |
+|AsyncHttpClientBenchmark                |HTTP11    |132837    |
+------------------------------------------------------------------------------------
+```
+
 
 ## h2load
 

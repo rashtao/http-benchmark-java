@@ -11,26 +11,16 @@ import java.util.function.Consumer;
 
 public class ReactorNettyBenchmark extends AbstractBenchmark {
 
-    private final HttpProtocol protocol;
-    private final int maxPendingRequests = MAX_PENDING_REQS_PER_THREAD * ASYNC_THREADS;
-    private final HttpClient client;
-    private final Consumer<String> cb = createCb();
     private final HttpProtocolVersion httpVersion;
-    private final Scheduler scheduler = Schedulers.newBoundedElastic(ASYNC_THREADS, maxPendingRequests, "consumer");
 
     public ReactorNettyBenchmark(HttpProtocolVersion httpVersion) {
         this.httpVersion = httpVersion;
-        switch (httpVersion) {
-            case HTTP11:
-                protocol = HttpProtocol.HTTP11;
-                break;
-            case H2C:
-                protocol = HttpProtocol.H2C;
-                break;
-            default:
-                throw new IllegalArgumentException();
+        if (httpVersion != HttpProtocolVersion.HTTP11) {
+            throw new IllegalArgumentException();
         }
-        client = createClient();
+        for (int i = 0; i < ASYNC_THREADS; i++) {
+            new ReactorNettyClient(HttpProtocol.HTTP11, MAX_PENDING_REQS_PER_THREAD, this);
+        }
     }
 
     @Override
@@ -40,18 +30,36 @@ public class ReactorNettyBenchmark extends AbstractBenchmark {
 
     @Override
     protected void start() {
-        for (int i = 0; i < maxPendingRequests; i++) {
-            sendReq();
-        }
     }
 
     @Override
     protected void shutdown() {
     }
 
+}
+
+class ReactorNettyClient {
+    private final AbstractBenchmark benchmark;
+    private final int maxPendingRequests;
+    private final HttpProtocol protocol;
+    private final HttpClient client;
+    private final Consumer<String> cb = createCb();
+    private final Scheduler scheduler;
+
+    public ReactorNettyClient(HttpProtocol protocol, int maxPendingRequests, AbstractBenchmark benchmark) {
+        this.benchmark = benchmark;
+        this.protocol = protocol;
+        this.maxPendingRequests = maxPendingRequests;
+        scheduler = Schedulers.newSingle("consumer", true);
+        client = createClient();
+        for (int i = 0; i < maxPendingRequests; i++) {
+            sendReq();
+        }
+    }
+
     private void sendReq() {
         client.get()
-                .uri(PATH)
+                .uri(AbstractBenchmark.PATH)
                 .responseContent()
                 .asString()
                 .subscribeOn(scheduler)
@@ -65,15 +73,14 @@ public class ReactorNettyBenchmark extends AbstractBenchmark {
                         .build())
                 .protocol(protocol)
                 .keepAlive(true)
-                .baseUrl(SCHEME + "://" + HOST + ":" + PORT)
-                .headers(headers -> headers.set(HttpHeaderNames.AUTHORIZATION, AUTH_HEADER));
+                .baseUrl(AbstractBenchmark.SCHEME + "://" + AbstractBenchmark.HOST + ":" + AbstractBenchmark.PORT)
+                .headers(headers -> headers.set(HttpHeaderNames.AUTHORIZATION, AbstractBenchmark.AUTH_HEADER));
     }
 
     private Consumer<String> createCb() {
         return httpClientResponse -> {
-            if (success(1))
+            if (benchmark.success(1))
                 sendReq();
         };
     }
-
 }
