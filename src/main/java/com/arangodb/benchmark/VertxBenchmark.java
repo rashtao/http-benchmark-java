@@ -16,8 +16,7 @@ public class VertxBenchmark extends AbstractBenchmark {
     @Override
     protected void start() {
         for (int i = 0; i < nThreads; i++) {
-            vertx.deployVerticle(new VertxClient(maxPendingRequestsPerThread, this, httpVersion,
-                    PORT, HOST, PATH, USER, PASSWD));
+            vertx.deployVerticle(new VertxClient(maxPendingRequestsPerThread, this, httpVersion));
         }
     }
 

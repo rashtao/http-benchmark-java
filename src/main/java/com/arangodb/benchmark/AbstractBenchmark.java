@@ -11,19 +11,19 @@ import java.util.function.Function;
 
 public abstract class AbstractBenchmark {
 
-    protected static final String USER = getEnv("JB_USER", "root");
-    protected static final String PASSWD = getEnv("JB_PASSWD", "test");
-    protected static final String AUTH_HEADER = "Basic " + new String(Base64.encodeBase64((USER + ":" + PASSWD).getBytes(StandardCharsets.ISO_8859_1)));
+    public static final String USER = getEnv("JB_USER", "root");
+    public static final String PASSWD = getEnv("JB_PASSWD", "test");
+    public static final String AUTH_HEADER = "Basic " + new String(Base64.encodeBase64((USER + ":" + PASSWD).getBytes(StandardCharsets.ISO_8859_1)));
 
-    protected static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "32"));
-    protected static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "4"));
-    protected static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "128"));
+    public static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "64"));
+    public static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "4"));
+    public static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "128"));
 
-    protected static final String SCHEME = getEnv("JB_SCHEME", "http");
-    protected static final String HOST = getEnv("JB_HOST", "127.0.0.1");
-    protected static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8529"));
-    protected static final String PATH = getEnv("JB_PATH", "/_api/version");
-    protected static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
+    public static final String SCHEME = getEnv("JB_SCHEME", "http");
+    public static final String HOST = getEnv("JB_HOST", "127.0.0.1");
+    public static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8529"));
+    public static final String PATH = getEnv("JB_PATH", "/_api/version");
+    public static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
 
     private final CountDownLatch completed = new CountDownLatch(1);
     private volatile Long startTime = null;
@@ -38,7 +38,7 @@ public abstract class AbstractBenchmark {
             "Vertx", VertxBenchmark::new,
             "AsyncHttpClient", AsyncHttpClientBenchmark::new,
             "ReactorNetty", ReactorNettyBenchmark::new
-            );
+    );
 
     public static AbstractBenchmark of(String type, String httpVersion) {
         if (!instantiatorMap.containsKey(type))

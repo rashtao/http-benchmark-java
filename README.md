@@ -7,6 +7,12 @@ Benchmarks of some Java http clients
 sudo arangod --server.io-threads 4
 ```
 
+## start server ssl
+
+```shell
+sudo arangod --ssl.keyfile ./server.pem --server.endpoint ssl://0.0.0.0:8529 --server.io-threads 4
+```
+
 ## run
 
 ```shell
