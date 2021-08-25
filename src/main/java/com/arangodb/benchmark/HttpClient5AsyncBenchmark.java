@@ -30,7 +30,7 @@ public class HttpClient5AsyncBenchmark extends AbstractBenchmark {
             case HTTP11:
                 protocol = HttpVersionPolicy.FORCE_HTTP_1;
                 break;
-            case H2C:
+            case H2:
                 protocol = HttpVersionPolicy.FORCE_HTTP_2;
                 break;
             default:

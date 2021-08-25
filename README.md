@@ -1,12 +1,6 @@
 # http-benchmark-java
 Benchmarks of some Java http clients
 
-## start server
-
-```shell
-sudo arangod --server.io-threads 4
-```
-
 ## start server ssl
 
 ```shell
@@ -28,7 +22,7 @@ sudo arangod --ssl.keyfile ./server.pem --server.endpoint ssl://0.0.0.0:8529 --s
 | JB_SYNC_THREADS                 | `32`            |
 | JB_ASYNC_THREADS                | `4`             |
 | JB_MAX_PENDING_REQS_PER_THREAD  | `32`            |
-| JB_SCHEME                       | `http`          |
+| JB_SCHEME                       | `https`         |
 | JB_HOST                         | `127.0.0.1`     |
 | JB_PORT                         | `8529`          |
 | JB_PATH                         | `/_api/version` |
@@ -43,13 +37,7 @@ The following combinations of `JB_CLIENT` and `JB_PROTOCOL` are allowed:
 | `JB_CLIENT`        | `JB_PROTOCOL` | 
 |--------------------|---------------|
 | `Vertx`            | `HTTP11`      |
-| `Vertx`            | `H2C`         |
-| `HttpClient4`      | `HTTP11`      |
-| `HttpClient5`      | `HTTP11`      |
-| `HttpClient5Async` | `HTTP11`      |
-| `HttpClient5Async` | `H2C`         |
-| `AsyncHttpClient`  | `HTTP11`      |
-| `ReactorNetty`     | `HTTP11`      |
+| `Vertx`            | `H2`          |
 
 
 ## build docker image
@@ -67,14 +55,8 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` afte
 
 ```text
 ------------------------------------------------------------------------------------
-|ReactorNettyBenchmark                   |HTTP11    |76155     |
-|VertxBenchmark                          |HTTP11    |94688     |
-|VertxBenchmark                          |H2C       |87176     |
-|HttpClient4Benchmark                    |HTTP11    |73616     |
-|HttpClient5Benchmark                    |HTTP11    |64825     |
-|HttpClient5AsyncBenchmark               |HTTP11    |56487     |
-|HttpClient5AsyncBenchmark               |H2C       |56570     |
-|AsyncHttpClientBenchmark                |HTTP11    |89198     |
+|VertxBenchmark                          |HTTP11    |52375     |
+|VertxBenchmark                          |H2        |50968     |
 ------------------------------------------------------------------------------------
 ```
 
@@ -82,14 +64,8 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version?detai
 
 ```text
 ------------------------------------------------------------------------------------
-|ReactorNettyBenchmark                   |HTTP11    |55377     |
-|VertxBenchmark                          |HTTP11    |55956     |
-|VertxBenchmark                          |H2C       |59499     |
-|HttpClient4Benchmark                    |HTTP11    |52197     |
-|HttpClient5Benchmark                    |HTTP11    |48952     |
-|HttpClient5AsyncBenchmark               |HTTP11    |46339     |
-|HttpClient5AsyncBenchmark               |H2C       |46270     |
-|AsyncHttpClientBenchmark                |HTTP11    |60350     |
+|VertxBenchmark                          |HTTP11    |38483     |
+|VertxBenchmark                          |H2        |40433     |
 ------------------------------------------------------------------------------------
 ```
 
@@ -99,14 +75,8 @@ req/s avg throughput for 1_000_000 `GET /_api/version` after 10s warmup:
 
 ```text
 ------------------------------------------------------------------------------------
-|ReactorNettyBenchmark                   |HTTP11    |121109    |
-|VertxBenchmark                          |HTTP11    |187722    |
-|VertxBenchmark                          |H2C       |155448    |
-|HttpClient4Benchmark                    |HTTP11    |101832    |
-|HttpClient5Benchmark                    |HTTP11    |83465     |
-|HttpClient5AsyncBenchmark               |HTTP11    |83416     |
-|HttpClient5AsyncBenchmark               |H2C       |81652     |
-|AsyncHttpClientBenchmark                |HTTP11    |132837    |
+|VertxBenchmark                          |HTTP11    |    |
+|VertxBenchmark                          |H2        |    |
 ------------------------------------------------------------------------------------
 ```
 
@@ -115,61 +85,61 @@ req/s avg throughput for 1_000_000 `GET /_api/version` after 10s warmup:
 
 ### /_api/version http/1.1
 ```text
-$ h2load --h1 -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" http://127.0.0.1:8529/_api/version
+$ h2load --h1 -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" https://127.0.0.1:8529/_api/version          
 
-finished in 6.34s, 157801.43 req/s, 33.26MB/s
+finished in 15.98s, 62560.08 req/s, 13.19MB/s
 requests: 1000000 total, 1000000 started, 1000000 done, 1000000 succeeded, 0 failed, 0 errored, 0 timeout
 status codes: 1000000 2xx, 0 3xx, 0 4xx, 0 5xx
 traffic: 210.76MB (221000000) total, 116.35MB (122000000) headers (space savings 0.00%), 57.22MB (60000000) data
                      min         max         mean         sd        +/- sd
-time for request:       32us     20.13ms       193us       398us    97.54%
-time for connect:      186us      1.83ms       842us       452us    59.38%
-time to 1st byte:     1.50ms      4.91ms      2.93ms       881us    65.63%
-req/s           :    4931.50     5794.12     5155.12      190.94    59.38%
+time for request:       67us     18.45ms       503us       572us    95.03%
+time for connect:     3.67ms     17.87ms      9.83ms      4.22ms    65.63%
+time to 1st byte:    10.86ms     18.86ms     14.03ms      2.55ms    59.38%
+req/s           :    1955.05     2062.42     1983.55       26.67    59.38%
 ```
 
-### /_api/version h2c
+### /_api/version h2
 ```text
-$ h2load -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" http://127.0.0.1:8529/_api/version
+$ h2load -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" https://127.0.0.1:8529/_api/version
 
-finished in 8.25s, 121226.86 req/s, 10.06MB/s
+finished in 13.79s, 72524.67 req/s, 6.02MB/s
 requests: 1000000 total, 1000000 started, 1000000 done, 1000000 succeeded, 0 failed, 0 errored, 0 timeout
 status codes: 1000000 2xx, 0 3xx, 0 4xx, 0 5xx
 traffic: 82.97MB (87003040) total, 8.58MB (9001696) headers (space savings 91.96%), 57.22MB (60000000) data
                      min         max         mean         sd        +/- sd
-time for request:       35us     17.62ms       255us       327us    97.08%
-time for connect:       55us       507us       241us       131us    62.50%
-time to 1st byte:      497us      2.06ms      1.10ms       373us    65.63%
-req/s           :    3788.50     4030.80     3858.16       60.17    81.25%
+time for request:       55us     16.07ms       421us       506us    95.79%
+time for connect:     3.16ms     18.34ms      9.81ms      4.44ms    62.50%
+time to 1st byte:     9.27ms     19.43ms     13.39ms      3.12ms    46.88%
+req/s           :    2266.47     2529.91     2338.59       72.36    84.38%
 ```
 
 ### /_api/version?details=true http/1.1
 ```text
-$ h2load -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" http://127.0.0.1:8529/_api/version?details=true
+$ h2load --h1 -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" https://127.0.0.1:8529/_api/version?details=true
 
-finished in 14.04s, 71222.68 req/s, 109.42MB/s
+finished in 20.91s, 47815.21 req/s, 79.62MB/s
 requests: 1000000 total, 1000000 started, 1000000 done, 1000000 succeeded, 0 failed, 0 errored, 0 timeout
 status codes: 1000000 2xx, 0 3xx, 0 4xx, 0 5xx
-traffic: 1.50GB (1611003040) total, 9.54MB (10001696) headers (space savings 91.23%), 1.47GB (1583000000) data
+traffic: 1.63GB (1746000000) total, 118.26MB (124000000) headers (space savings 0.00%), 1.47GB (1583000000) data
                      min         max         mean         sd        +/- sd
-time for request:       65us     15.57ms       440us       362us    93.51%
-time for connect:       64us       534us       258us       137us    62.50%
-time to 1st byte:      560us      2.05ms      1.39ms       384us    71.88%
-req/s           :    2225.73     2267.22     2248.45       12.20    65.63%
+time for request:       91us     16.58ms       662us       582us    92.63%
+time for connect:     3.39ms     17.93ms      9.35ms      4.30ms    59.38%
+time to 1st byte:     9.81ms     19.03ms     13.68ms      2.71ms    68.75%
+req/s           :    1494.24     1533.63     1506.38        9.62    56.25%
 ```
 
-### /_api/version?details=true h2c
+### /_api/version?details=true h2
 
 ```text
-$ h2load -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" http://127.0.0.1:8529/_api/version?details=true
+$ h2load -t 4 -n 1000000 -c 32 -H "Authorization: Basic cm9vdDp0ZXN0" https://127.0.0.1:8529/_api/version?details=true
 
-finished in 13.79s, 72530.58 req/s, 111.43MB/s
+finished in 19.84s, 50414.72 req/s, 77.46MB/s
 requests: 1000000 total, 1000000 started, 1000000 done, 1000000 succeeded, 0 failed, 0 errored, 0 timeout
 status codes: 1000000 2xx, 0 3xx, 0 4xx, 0 5xx
 traffic: 1.50GB (1611003040) total, 9.54MB (10001696) headers (space savings 91.23%), 1.47GB (1583000000) data
                      min         max         mean         sd        +/- sd
-time for request:       56us     13.49ms       433us       367us    93.60%
-time for connect:       58us       611us       282us       174us    62.50%
-time to 1st byte:      569us      1.83ms      1.22ms       353us    53.13%
-req/s           :    2266.61     2353.32     2285.28       21.96    71.88%
+time for request:       87us     19.28ms       620us       578us    93.54%
+time for connect:     4.13ms     19.37ms     10.18ms      3.91ms    65.63%
+time to 1st byte:    12.73ms     20.78ms     16.61ms      2.66ms    53.13%
+req/s           :    1575.51     1627.62     1592.40       15.47    65.63%
 ```

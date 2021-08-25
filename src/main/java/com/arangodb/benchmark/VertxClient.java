@@ -27,7 +27,7 @@ public class VertxClient extends AbstractVerticle {
             case HTTP11:
                 protocol = HttpVersion.HTTP_1_1;
                 break;
-            case H2C:
+            case H2:
                 protocol = HttpVersion.HTTP_2;
                 break;
             default:
@@ -59,12 +59,17 @@ public class VertxClient extends AbstractVerticle {
                 .setKeepAlive(true)
                 .setTcpKeepAlive(true)
                 .setPipelining(true)
+                .setHttp2MultiplexingLimit(maxPendingRequestsPerThread)
                 .setReuseAddress(true)
                 .setReusePort(true)
                 .setHttp2ClearTextUpgrade(false)
                 .setProtocolVersion(protocol)
                 .setDefaultHost(AbstractBenchmark.HOST)
                 .setDefaultPort(AbstractBenchmark.PORT)
+                .setTrustAll(true)
+                .setVerifyHost(false)
+                .setUseAlpn(true)
+                .setSsl(true)
         );
         for (int i = 0; i < maxPendingRequestsPerThread; i++) {
             sendReq();

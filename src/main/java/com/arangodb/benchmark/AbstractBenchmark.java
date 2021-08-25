@@ -19,7 +19,7 @@ public abstract class AbstractBenchmark {
     public static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "4"));
     public static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "128"));
 
-    public static final String SCHEME = getEnv("JB_SCHEME", "http");
+    public static final String SCHEME = getEnv("JB_SCHEME", "https");
     public static final String HOST = getEnv("JB_HOST", "127.0.0.1");
     public static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8529"));
     public static final String PATH = getEnv("JB_PATH", "/_api/version");
