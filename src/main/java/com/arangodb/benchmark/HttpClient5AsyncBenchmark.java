@@ -78,7 +78,7 @@ public class HttpClient5AsyncBenchmark extends AbstractBenchmark {
     private CloseableHttpAsyncClient createClient() {
 
         final IOReactorConfig ioReactorConfig = IOReactorConfig.custom()
-                .setIoThreadCount(nThreads * 2)
+                .setIoThreadCount(nThreads)
                 .build();
 
         PoolingAsyncClientConnectionManager cm = new PoolingAsyncClientConnectionManager();

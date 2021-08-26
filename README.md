@@ -1,6 +1,24 @@
 # http-benchmark-java
 Benchmarks of some Java http clients
 
+## Vertx Webclient results
+
+UNIT: thousands of requests per second
+
+### /_api/version
+
+|          | TLS | no TLS |
+-----------|-----|--------|
+| HTTP/1.1 | 49  | 109    |
+| HTTP/2   | 61  | 92     |
+
+### /_api/version?details=true
+
+|          | TLS | no TLS |
+-----------|-----|--------|
+| HTTP/1.1 | 36  | 59     |
+| HTTP/2   | 43  | 59     |
+
 ## start server
 
 ```shell
@@ -67,14 +85,14 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` afte
 
 ```text
 ------------------------------------------------------------------------------------
-|ReactorNettyBenchmark                   |HTTP11    |76155     |
-|VertxBenchmark                          |HTTP11    |94688     |
-|VertxBenchmark                          |H2C       |87176     |
-|HttpClient4Benchmark                    |HTTP11    |73616     |
-|HttpClient5Benchmark                    |HTTP11    |64825     |
-|HttpClient5AsyncBenchmark               |HTTP11    |56487     |
-|HttpClient5AsyncBenchmark               |H2C       |56570     |
-|AsyncHttpClientBenchmark                |HTTP11    |89198     |
+|ReactorNettyBenchmark                   |HTTP11    |56596     |
+|VertxBenchmark                          |HTTP11    |109265    |
+|VertxBenchmark                          |H2C       |91575     |
+|HttpClient4Benchmark                    |HTTP11    |72358     |
+|HttpClient5Benchmark                    |HTTP11    |61485     |
+|HttpClient5AsyncBenchmark               |HTTP11    |42663     |
+|HttpClient5AsyncBenchmark               |H2C       |41912     |
+|AsyncHttpClientBenchmark                |HTTP11    |86385     |
 ------------------------------------------------------------------------------------
 ```
 
@@ -82,14 +100,14 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version?detai
 
 ```text
 ------------------------------------------------------------------------------------
-|ReactorNettyBenchmark                   |HTTP11    |55377     |
-|VertxBenchmark                          |HTTP11    |55956     |
-|VertxBenchmark                          |H2C       |59499     |
-|HttpClient4Benchmark                    |HTTP11    |52197     |
-|HttpClient5Benchmark                    |HTTP11    |48952     |
-|HttpClient5AsyncBenchmark               |HTTP11    |46339     |
-|HttpClient5AsyncBenchmark               |H2C       |46270     |
-|AsyncHttpClientBenchmark                |HTTP11    |60350     |
+|ReactorNettyBenchmark                   |HTTP11    |43689     |
+|VertxBenchmark                          |HTTP11    |58844     |
+|VertxBenchmark                          |H2C       |59364     |
+|HttpClient4Benchmark                    |HTTP11    |48583     |
+|HttpClient5Benchmark                    |HTTP11    |46403     |
+|HttpClient5AsyncBenchmark               |HTTP11    |35985     |
+|HttpClient5AsyncBenchmark               |H2C       |35792     |
+|AsyncHttpClientBenchmark                |HTTP11    |58575     |
 ------------------------------------------------------------------------------------
 ```
 
