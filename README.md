@@ -25,9 +25,9 @@ sudo arangod --ssl.keyfile ./server.pem --server.endpoint ssl://0.0.0.0:8529 --s
 |---------------------------------|-----------------|
 | JB_USER                         | `root`          |
 | JB_PASSWD                       | `test`          |
-| JB_SYNC_THREADS                 | `32`            |
-| JB_ASYNC_THREADS                | `4`             |
-| JB_MAX_PENDING_REQS_PER_THREAD  | `32`            |
+| JB_SYNC_THREADS                 | `64`            |
+| JB_ASYNC_THREADS                | `8`             |
+| JB_MAX_PENDING_REQS_PER_THREAD  | `128`           |
 | JB_SCHEME                       | `http`          |
 | JB_HOST                         | `127.0.0.1`     |
 | JB_PORT                         | `8529`          |
