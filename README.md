@@ -19,9 +19,9 @@ sudo arangod --ssl.keyfile ./server.pem --server.endpoint ssl://0.0.0.0:8529 --s
 |---------------------------------|-----------------|
 | JB_USER                         | `root`          |
 | JB_PASSWD                       | `test`          |
-| JB_SYNC_THREADS                 | `32`            |
-| JB_ASYNC_THREADS                | `4`             |
-| JB_MAX_PENDING_REQS_PER_THREAD  | `32`            |
+| JB_SYNC_THREADS                 | `64`            |
+| JB_ASYNC_THREADS                | `8`             |
+| JB_MAX_PENDING_REQS_PER_THREAD  | `128`           |
 | JB_SCHEME                       | `https`         |
 | JB_HOST                         | `127.0.0.1`     |
 | JB_PORT                         | `8529`          |
@@ -55,8 +55,8 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version` afte
 
 ```text
 ------------------------------------------------------------------------------------
-|VertxBenchmark                          |HTTP11    |52375     |
-|VertxBenchmark                          |H2        |50968     |
+|VertxBenchmark                          |HTTP11    |43415     |
+|VertxBenchmark                          |H2        |62480     |
 ------------------------------------------------------------------------------------
 ```
 
@@ -65,7 +65,7 @@ req/s avg throughput for 1_000_000 `GET http://127.0.0.1:8529/_api/version?detai
 ```text
 ------------------------------------------------------------------------------------
 |VertxBenchmark                          |HTTP11    |38483     |
-|VertxBenchmark                          |H2        |40433     |
+|VertxBenchmark                          |H2        |42416     |
 ------------------------------------------------------------------------------------
 ```
 
@@ -75,8 +75,8 @@ req/s avg throughput for 1_000_000 `GET /_api/version` after 10s warmup:
 
 ```text
 ------------------------------------------------------------------------------------
-|VertxBenchmark                          |HTTP11    |    |
-|VertxBenchmark                          |H2        |    |
+|VertxBenchmark                          |HTTP11    |120743   |
+|VertxBenchmark                          |H2        |96283    |
 ------------------------------------------------------------------------------------
 ```
 

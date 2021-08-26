@@ -16,7 +16,7 @@ public abstract class AbstractBenchmark {
     public static final String AUTH_HEADER = "Basic " + new String(Base64.encodeBase64((USER + ":" + PASSWD).getBytes(StandardCharsets.ISO_8859_1)));
 
     public static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "64"));
-    public static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "4"));
+    public static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "8"));
     public static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "128"));
 
     public static final String SCHEME = getEnv("JB_SCHEME", "https");
