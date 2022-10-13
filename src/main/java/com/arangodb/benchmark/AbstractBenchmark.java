@@ -21,8 +21,8 @@ public abstract class AbstractBenchmark {
 
     public static final String SCHEME = getEnv("JB_SCHEME", "http");
     public static final String HOST = getEnv("JB_HOST", "127.0.0.1");
-    public static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8529"));
-    public static final String PATH = getEnv("JB_PATH", "/_api/version");
+    public static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8080"));
+    public static final String PATH = getEnv("JB_PATH", "/_api/version?details=true");
     public static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
 
     private final CountDownLatch completed = new CountDownLatch(1);
@@ -35,7 +35,8 @@ public abstract class AbstractBenchmark {
             "HttpClient4", HttpClient4Benchmark::new,
             "HttpClient5", HttpClient5Benchmark::new,
             "HttpClient5Async", HttpClient5AsyncBenchmark::new,
-            "Vertx", VertxBenchmark::new
+            "Vertx", VertxBenchmark::new,
+            "VertxSync", VertxSyncBenchmark::new
     );
 
     public static AbstractBenchmark of(String type, String httpVersion) {

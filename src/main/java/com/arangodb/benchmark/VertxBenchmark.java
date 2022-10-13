@@ -31,8 +31,6 @@ public class VertxBenchmark extends AbstractBenchmark {
             default:
                 throw new IllegalArgumentException();
         }
-
-
     }
 
     @Override
