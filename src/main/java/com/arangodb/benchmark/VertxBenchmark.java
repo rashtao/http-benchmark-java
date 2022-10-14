@@ -36,10 +36,9 @@ public class VertxBenchmark extends AbstractBenchmark {
     @Override
     protected void start() {
         for (int i = 0; i < nThreads; i++) {
-            Vertx vertx = Vertx.vertx(new VertxOptions().setEventLoopPoolSize(1));
+            Vertx vertx = Vertx.vertx(new VertxOptions().setPreferNativeTransport(true).setEventLoopPoolSize(1));
             int finalI = i;
             vertx.runOnContext(e -> Thread.currentThread().setName("adb-eventloop-" + finalI));
-            vertxes.add(vertx);
             WebClient client = WebClient.create(vertx, new WebClientOptions()
                     .setKeepAlive(true)
                     .setTcpKeepAlive(true)
@@ -51,6 +50,7 @@ public class VertxBenchmark extends AbstractBenchmark {
                     .setDefaultHost(AbstractBenchmark.HOST)
                     .setDefaultPort(AbstractBenchmark.PORT)
             );
+            vertxes.add(vertx);
             clients.add(client);
             new VertxClient(maxPendingRequestsPerThread, this, client);
         }

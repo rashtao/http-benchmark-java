@@ -15,12 +15,12 @@ public abstract class AbstractBenchmark {
     public static final String PASSWD = getEnv("JB_PASSWD", "test");
     public static final String AUTH_HEADER = "Basic " + new String(Base64.encodeBase64((USER + ":" + PASSWD).getBytes(StandardCharsets.ISO_8859_1)));
 
-    public static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "64"));
+    public static final int SYNC_THREADS = Integer.parseInt(getEnv("JB_SYNC_THREADS", "128"));
     public static final int ASYNC_THREADS = Integer.parseInt(getEnv("JB_ASYNC_THREADS", "8"));
     public static final int MAX_PENDING_REQS_PER_THREAD = Integer.parseInt(getEnv("JB_MAX_PENDING_REQS_PER_THREAD", "128"));
 
     public static final String SCHEME = getEnv("JB_SCHEME", "http");
-    public static final String HOST = getEnv("JB_HOST", "127.0.0.1");
+    public static final String HOST = getEnv("JB_HOST", "192.168.99.10");
     public static final int PORT = Integer.parseInt(getEnv("JB_PORT", "8080"));
     public static final String PATH = getEnv("JB_PATH", "/_api/version?details=true");
     public static final String URL = SCHEME + "://" + HOST + ":" + PORT + PATH;
@@ -33,8 +33,6 @@ public abstract class AbstractBenchmark {
 
     private static Map<String, Function<HttpProtocolVersion, AbstractBenchmark>> instantiatorMap = Map.of(
             "HttpClient4", HttpClient4Benchmark::new,
-            "HttpClient5", HttpClient5Benchmark::new,
-            "HttpClient5Async", HttpClient5AsyncBenchmark::new,
             "Vertx", VertxBenchmark::new,
             "VertxSync", VertxSyncBenchmark::new
     );

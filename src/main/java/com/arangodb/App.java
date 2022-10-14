@@ -18,7 +18,7 @@ public class App {
 
     private static void runBenchmark(AbstractBenchmark b) {
         System.out.println(b.getClass().getSimpleName() + " " + b.getHttpVersion());
-        int warmupDuration = Integer.parseInt(getEnv("JB_WARMUP_DURATION", "20"));
+        int warmupDuration = Integer.parseInt(getEnv("JB_WARMUP_DURATION", "15"));
         int numberOfRequests = Integer.parseInt(getEnv("JB_REQUESTS", "1000000"));
 
         // warmup

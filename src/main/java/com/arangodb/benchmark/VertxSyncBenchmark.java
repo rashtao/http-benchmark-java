@@ -35,7 +35,9 @@ public class VertxSyncBenchmark extends AbstractBenchmark {
         }
 
         for (int i = 0; i < ASYNC_THREADS; i++) {
-            var vertx = Vertx.vertx(new VertxOptions().setPreferNativeTransport(true).setEventLoopPoolSize(1));
+            Vertx vertx = Vertx.vertx(new VertxOptions().setPreferNativeTransport(true).setEventLoopPoolSize(1));
+            int finalI = i;
+            vertx.runOnContext(e -> Thread.currentThread().setName("adb-eventloop-" + finalI));
             var client = WebClient.create(vertx, new WebClientOptions()
                     .setKeepAlive(true)
                     .setTcpKeepAlive(true)
