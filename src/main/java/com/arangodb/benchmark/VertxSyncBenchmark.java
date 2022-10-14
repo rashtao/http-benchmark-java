@@ -35,10 +35,8 @@ public class VertxSyncBenchmark extends AbstractBenchmark {
         }
 
         for (int i = 0; i < ASYNC_THREADS; i++) {
-            var vertx = Vertx.vertx(new VertxOptions().setEventLoopPoolSize(1));
+            var vertx = Vertx.vertx(new VertxOptions().setPreferNativeTransport(true).setEventLoopPoolSize(1));
             var client = WebClient.create(vertx, new WebClientOptions()
-                    .setMaxPoolSize(20)
-                    .setHttp2MaxPoolSize(4)
                     .setKeepAlive(true)
                     .setTcpKeepAlive(true)
                     .setPipelining(true)
